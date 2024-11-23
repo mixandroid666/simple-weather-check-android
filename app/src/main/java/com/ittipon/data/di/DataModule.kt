@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import com.ittipon.data.MyModelRepository
 import com.ittipon.data.DefaultMyModelRepository
+import com.ittipon.data.DefaultWeatherRepository
+import com.ittipon.data.WeatherRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,14 +38,20 @@ interface DataModule {
     fun bindsMyModelRepository(
         myModelRepository: DefaultMyModelRepository
     ): MyModelRepository
+
+    @Singleton
+    @Binds
+    fun bindsWeatherRepository(
+        defaultWeatherRepository: DefaultWeatherRepository,
+    ): WeatherRepository
 }
 
-class FakeMyModelRepository @Inject constructor() : MyModelRepository {
-    override val myModels: Flow<List<String>> = flowOf(fakeMyModels)
-
-    override suspend fun add(name: String) {
-        throw NotImplementedError()
-    }
-}
-
-val fakeMyModels = listOf("One", "Two", "Three")
+//class FakeMyModelRepository @Inject constructor() : MyModelRepository {
+//    override val myModels: Flow<List<String>> = flowOf(fakeMyModels)
+//
+//    override suspend fun add(name: String) {
+//        throw NotImplementedError()
+//    }
+//}
+//
+//val fakeMyModels = listOf("One", "Two", "Three")

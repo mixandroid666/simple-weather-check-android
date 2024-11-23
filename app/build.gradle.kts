@@ -82,6 +82,11 @@ dependencies {
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     androidTestImplementation(composeBom)
+    // Networking
+    implementation(libs.retrofit)
+    implementation(libs.gson)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.okhttp.profiler)
 
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)

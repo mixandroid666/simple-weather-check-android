@@ -16,6 +16,7 @@
 
 package com.ittipon.ui.mymodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,15 +27,27 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import com.ittipon.data.MyModelRepository
+import com.ittipon.data.WeatherRepository
+import com.ittipon.data.network.di.GeoCodingResponse
 import com.ittipon.ui.mymodel.MyModelUiState.Error
 import com.ittipon.ui.mymodel.MyModelUiState.Loading
 import com.ittipon.ui.mymodel.MyModelUiState.Success
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
 import javax.inject.Inject
 
 @HiltViewModel
 class MyModelViewModel @Inject constructor(
-    private val myModelRepository: MyModelRepository
+    private val myModelRepository: MyModelRepository,
+    private val weatherRepository: WeatherRepository,
 ) : ViewModel() {
+
+    init {
+        viewModelScope.launch {
+            Log.d("xxx", ": " + getGeoCoding("london").string())
+
+        }
+    }
 
     val uiState: StateFlow<MyModelUiState> = myModelRepository
         .myModels.map<List<String>, MyModelUiState>(::Success)
@@ -45,6 +58,10 @@ class MyModelViewModel @Inject constructor(
         viewModelScope.launch {
             myModelRepository.add(name)
         }
+    }
+
+    suspend fun getGeoCoding(city: String): ResponseBody {
+        return weatherRepository.getGeoCodingData(city)
     }
 }
 
