@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 /*
  * Copyright (C) 2022 The Android Open Source Project
  *
@@ -28,6 +31,8 @@ android {
     namespace = "com.ittipon.weather_forecast"
     compileSdk = 35
 
+
+
     defaultConfig {
         applicationId = "com.ittipon.weather_forecast"
         minSdk = 21
@@ -44,6 +49,14 @@ android {
         ksp {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
+
+        val configPropertiesFile = rootProject.file("config.properties")
+        val configProperties = Properties().apply {
+            if (configPropertiesFile.exists()) {
+                load(FileInputStream(configPropertiesFile))
+            }
+        }
+        buildConfigField("String", "WEATHER_APP_API_KEY", "\"${configProperties["weatherApiKey"]}\"")
     }
 
     buildTypes {
@@ -65,7 +78,7 @@ android {
     buildFeatures {
         compose = true
         aidl = false
-        buildConfig = false
+        buildConfig = true
         renderScript = false
         shaders = false
     }
@@ -127,7 +140,6 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
     // Instrumented tests: jUnit rules and runners
-
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.runner)

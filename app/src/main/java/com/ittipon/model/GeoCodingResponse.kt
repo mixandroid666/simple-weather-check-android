@@ -1,4 +1,4 @@
-package com.ittipon.data.network.di
+package com.ittipon.model
 
 import com.google.gson.annotations.SerializedName
 

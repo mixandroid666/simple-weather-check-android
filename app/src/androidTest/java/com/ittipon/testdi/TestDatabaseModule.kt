@@ -21,7 +21,7 @@ import dagger.Module
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import com.ittipon.data.MyModelRepository
-import com.ittipon.data.di.DataModule
+import com.ittipon.di.DataModule
 import com.ittipon.data.di.FakeMyModelRepository
 
 @Module

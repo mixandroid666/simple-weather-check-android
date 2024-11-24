@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ittipon.ui.mymodel
+package com.ittipon.ui.weather
 
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,16 +32,16 @@ import com.ittipon.data.MyModelRepository
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
-class MyModelViewModelTest {
+class WeatherViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {
-        val viewModel = MyModelViewModel(FakeMyModelRepository())
+        val viewModel = WeatherViewModel(FakeMyModelRepository())
         assertEquals(viewModel.uiState.first(), MyModelUiState.Loading)
     }
 
     @Test
     fun uiState_onItemSaved_isDisplayed() = runTest {
-        val viewModel = MyModelViewModel(FakeMyModelRepository())
+        val viewModel = WeatherViewModel(FakeMyModelRepository())
         assertEquals(viewModel.uiState.first(), MyModelUiState.Loading)
     }
 }
