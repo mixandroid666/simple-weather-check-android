@@ -16,24 +16,15 @@
 
 package com.ittipon.ui.mymodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import com.ittipon.data.MyModelRepository
 import com.ittipon.data.WeatherRepository
 import com.ittipon.data.network.di.GeoCodingResponse
-import com.ittipon.ui.mymodel.MyModelUiState.Error
-import com.ittipon.ui.mymodel.MyModelUiState.Loading
-import com.ittipon.ui.mymodel.MyModelUiState.Success
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,17 +33,18 @@ class MyModelViewModel @Inject constructor(
     private val weatherRepository: WeatherRepository,
 ) : ViewModel() {
 
-    init {
-        viewModelScope.launch {
-            Log.d("xxx", ": " + getGeoCoding("london").string())
+    private val _geoCodingData = MutableStateFlow<UiState<List<GeoCodingResponse>>>(
+        UiState.ShowCityList(
+            listOf()
+        )
+    )
+    val geoCodingData: StateFlow<UiState<List<GeoCodingResponse>>> get() = _geoCodingData
 
-        }
-    }
 
-    val uiState: StateFlow<MyModelUiState> = myModelRepository
-        .myModels.map<List<String>, MyModelUiState>(::Success)
-        .catch { emit(Error(it)) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
+//    val uiState: StateFlow<MyModelUiState> = myModelRepository
+//        .myModels.map<List<String>, MyModelUiState>(::Success)
+//        .catch { emit(Error(it)) }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun addMyModel(name: String) {
         viewModelScope.launch {
@@ -60,13 +52,18 @@ class MyModelViewModel @Inject constructor(
         }
     }
 
-    suspend fun getGeoCoding(city: String): ResponseBody {
-        return weatherRepository.getGeoCodingData(city)
+
+    fun getGeoCoding(city: String) {
+        viewModelScope.launch {
+            weatherRepository.getGeoCodingData(city).collect { result ->
+                _geoCodingData.value = result
+            }
+        }
     }
 }
 
-sealed interface MyModelUiState {
-    object Loading : MyModelUiState
-    data class Error(val throwable: Throwable) : MyModelUiState
-    data class Success(val data: List<String>) : MyModelUiState
+sealed class UiState<out T> {
+    data object Loading : UiState<Nothing>()
+    data class ShowCityList<out T>(val data: T) : UiState<T>()
+    data class Error(val message: String) : UiState<Nothing>()
 }

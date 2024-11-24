@@ -1,18 +1,19 @@
 package com.ittipon.data.network.di
 
-data class GeoCodingResponse(
-    val a: String? = null, // Or whatever type 'a' should be
-    val issuccess: Boolean,
-    val code: Int,
-    val message: String,
-    val data: List<GeoCodingData>
-)
+import com.google.gson.annotations.SerializedName
 
-data class GeoCodingData(
+
+data class GeoCodingResponse(
+    @SerializedName("name")
     val name: String,
-    val local_names: Map<String, String>,
+    @SerializedName("local_names")
+    val localNames: Map<String, String>,
+    @SerializedName("lat")
     val lat: Double,
+    @SerializedName("lon")
     val lon: Double,
+    @SerializedName("country")
     val country: String,
+    @SerializedName("state")
     val state: String?
 )

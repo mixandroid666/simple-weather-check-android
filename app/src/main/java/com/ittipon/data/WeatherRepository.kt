@@ -18,24 +18,40 @@ package com.ittipon.data
 
 import com.ittipon.data.network.di.ApiService
 import com.ittipon.data.network.di.GeoCodingResponse
-import okhttp3.ResponseBody
+import com.ittipon.ui.mymodel.UiState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import okio.IOException
+import retrofit2.HttpException
 import javax.inject.Inject
 
 interface WeatherRepository {
 
-    suspend fun getGeoCodingData(city: String): ResponseBody
+    fun getGeoCodingData(city: String): Flow<UiState<List<GeoCodingResponse>>>
 }
 
 class DefaultWeatherRepository @Inject constructor(
     private val apiService: ApiService,
 ) : WeatherRepository {
 
-    override suspend fun getGeoCodingData(city: String): ResponseBody {
-//        return "test"
-        return apiService.getGeoCodingData(
-            city = city,
-            limit = "1",
-            appId = "2226376508ff06be82314db32f213f02"
-        )
-    }
+    override fun getGeoCodingData(city: String): Flow<UiState<List<GeoCodingResponse>>> =
+        flow {
+            try {
+                emit(UiState.Loading)
+                val response = apiService.getGeoCodingData(
+                    city = city,
+                    limit = "10",
+                    appId = "2226376508ff06be82314db32f213f02"
+                )
+                emit(UiState.ShowCityList(response))
+            } catch (e: HttpException) {
+                emit(UiState.Error("HTTP error: ${e.message}"))
+            } catch (e: IOException) {
+                emit(UiState.Error("Network error: ${e.message}"))
+            } catch (e: Exception) {
+                emit(UiState.Error("Unexpected error: ${e.message}"))
+            }
+
+
+        }
 }

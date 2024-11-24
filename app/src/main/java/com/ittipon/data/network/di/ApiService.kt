@@ -1,7 +1,6 @@
 package com.ittipon.data.network.di
 
-import dagger.Provides
-import okhttp3.ResponseBody
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -17,6 +16,6 @@ interface ApiService {
         @Query("q") city : String,
         @Query("limit") limit : String,
         @Query("appid") appId : String,
-    ): ResponseBody
+    ): List<GeoCodingResponse>
 
 }
