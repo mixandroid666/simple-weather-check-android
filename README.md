@@ -1,41 +1,46 @@
-Architecture starter template (single module)
-==================
+# Weather Forecast App
 
-This template is compatible with the latest **stable** version of Android Studio.
-
-## Screenshots
-![Screenshot](https://github.com/android/architecture-templates/raw/main/screenshots.png)
+This Android application provides real-time weather information for any location worldwide. Users can search for a city and view the current weather conditions, including temperature, humidity, wind speed, and more.
 
 ## Features
 
-* Room Database
+* Search for weather by city name.
+* Display current weather conditions.
+* Show temperature in Celsius or Fahrenheit.
+* View wind speed and direction.
+* See humidity and precipitation information.
+* Display weather icons for different conditions.
+* (Add any other features your app has)
+
+## Screenshots
+
+(Include some screenshots of your app here)
+
+## Technologies Used
+
+* Kotlin
+* Jetpack Compose
+* Retrofit
 * Hilt
-* ViewModel, read+write
-* UI in Compose, list + write (Material3)
-* Navigation
-* Repository and data source
-* Kotlin Coroutines and Flow
-* Unit tests
-* UI tests using fake data with Hilt
+* Coroutines
+* (Add any other libraries or technologies you've used)
+
+## Getting Started
+
+1. Clone the repository: `git clone https://github.com/your-username/weather-forecast.git`
+2. Open the project in Android Studio.
+3. Build and run the app on an emulator or device.
 
 ## Usage
 
-1. Clone this branch
+1. Enter the name of a city in the search bar.
+2. Tap the search button.
+3. The current weather conditions for the city will be displayed.
 
-```
-git clone https://github.com/android/architecture-templates.git --branch base
-```
+## Contributing
 
-2. Run the customizer script:
+Contributions are welcome! Please feel free to submit pull requests or open issues.
 
-```
-./customizer.sh your.package.name DataItemType [MyApplication]
-```
+## License
 
-Where `your.package.name` is your app ID (should be lowercase) and `DataItemType` is used for the
-name of the screen, exposed state and data base entity (should be PascalCase). You can add an optional application name.
-
-# License
-
-Now in Android is distributed under the terms of the Apache License (Version 2.0). See the
-[license](LICENSE) for more information.
+This project is licensed under the [MIT License](LICENSE).
