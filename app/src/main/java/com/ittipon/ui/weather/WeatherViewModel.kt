@@ -21,6 +21,10 @@ class WeatherViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<WeatherUiState>(WeatherUiState.Idle)
     val uiState: StateFlow<WeatherUiState> get() = _uiState
 
+    fun emitIdle() {
+        _uiState.value = WeatherUiState.Idle
+    }
+
     fun getGeoCoding(city: String) {
         viewModelScope.launch {
             weatherRepository.getGeoCoding(city)
@@ -32,7 +36,7 @@ class WeatherViewModel @Inject constructor(
                 }
                 .collect {
                     if (it.isEmpty()) {
-                        _uiState.value = WeatherUiState.Empty
+                        _uiState.value = WeatherUiState.NoCityFound
                         return@collect
                     }
                     _uiState.value = WeatherUiState.ShowCityList(it)
@@ -56,12 +60,11 @@ class WeatherViewModel @Inject constructor(
     }
 }
 
-
 sealed class WeatherUiState {
     data object Loading : WeatherUiState()
     data object Idle : WeatherUiState()
     data class ShowCityList(val cityList: List<GeoCodingResponse>) : WeatherUiState()
     data class ShowCurrentWeather(val weather: CurrentWeatherResponse) : WeatherUiState()
-    data object Empty : WeatherUiState()
+    data object NoCityFound : WeatherUiState()
     data class Error(val message: String) : WeatherUiState()
 }

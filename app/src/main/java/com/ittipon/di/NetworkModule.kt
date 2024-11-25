@@ -3,6 +3,7 @@ package com.ittipon.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ittipon.data.ApiService
+import com.ittipon.weather_forecast.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,7 +42,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org")
+            .baseUrl(BuildConfig.API_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(okHttpClient)
             .build()

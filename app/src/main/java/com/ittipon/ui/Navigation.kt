@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ittipon.ui.weather.WeatherScreen
+import com.ittipon.ui.weather.WeatherParentScreen
 
 @Composable
 fun MainNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { WeatherScreen(modifier = Modifier.padding(16.dp)) }
+        composable("main") { WeatherParentScreen(modifier = Modifier.padding(16.dp)) }
     }
 }

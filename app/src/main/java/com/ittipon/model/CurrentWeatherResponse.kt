@@ -1,56 +1,54 @@
 package com.ittipon.model
 
-data class CurrentWeatherResponse(
-    val coord: Coord,
-    val weather: List<Weather>,
-    val base: String,
-    val main: Main,
-    val visibility: Int,
-    val wind: Wind,
-    val clouds: Clouds,
-    val dt: Long,
-    val sys: Sys,
-    val timezone: Int,
-    val id: Int,
-    val name: String,
-    val cod: Int
-)
+import com.google.gson.annotations.SerializedName
 
-data class Coord(
-    val lon: Double,
-    val lat: Double
+data class CurrentWeatherResponse(
+
+    @SerializedName("weather")
+    val weather: List<Weather>?,
+    @SerializedName("base")
+    val base: String?,
+    @SerializedName("main")
+    val main: Main?,
+    @SerializedName("wind")
+    val wind: Wind?,
 )
 
 data class Weather(
-    val id: Int,
-    val main: String,
-    val description: String,
-    val icon: String
+    @SerializedName("id")
+    val id: Int?,
+    @SerializedName("main")
+    val main: String?,
+    @SerializedName("description")
+    val description: String?,
+    @SerializedName("icon")
+    val icon: String?
 )
 
 data class Main(
-    val temp: Double,
-    val feels_like: Double,
-    val temp_min: Double,
-    val temp_max: Double,
-    val pressure: Int,
-    val humidity: Int,
-    val sea_level: Int? = null, // Optional
-    val grnd_level: Int? = null // Optional
+    @SerializedName("temp")
+    val temp: Double?,
+    @SerializedName("feels_like")
+    val feels_like: Double?,
+    @SerializedName("temp_min")
+    val temp_min: Double?,
+    @SerializedName("temp_max")
+    val temp_max: Double?,
+    @SerializedName("pressure")
+    val pressure: Int?,
+    @SerializedName("humidity")
+    val humidity: Int?,
+    @SerializedName("sea_level")
+    val sea_level: Int? ,
+    @SerializedName("grnd_level")
+    val grnd_level: Int?
 )
 
 data class Wind(
-    val speed: Double,
-    val deg: Int,
-    val gust: Double? = null // Optional
-)
-
-data class Clouds(
-    val all: Int
-)
-
-data class Sys(
-    val country: String,
-    val sunrise: Long,
-    val sunset: Long
+    @SerializedName("speed")
+    val speed: Double?,
+    @SerializedName("deg")
+    val deg: Int?,
+    @SerializedName("gust")
+    val gust: Double?
 )

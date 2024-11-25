@@ -4,10 +4,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun WeatherScreen(
+fun WeatherParentScreen(
     modifier: Modifier = Modifier,
     viewModel: WeatherViewModel = hiltViewModel()
 ) {
@@ -34,10 +38,11 @@ fun WeatherScreen(
     )
 
     WeatherScreen(
-        modifier = modifier,
+        modifier = modifier.padding(WindowInsets.systemBars.asPaddingValues()),
         uiState = uiState,
         onSave = viewModel::getGeoCoding,
-        onSelectCity = viewModel::getCurrentWeather
+        onSelectCity = viewModel::getCurrentWeather,
+        onTextChange = viewModel::emitIdle
     )
 }
 
@@ -47,6 +52,7 @@ internal fun WeatherScreen(
     uiState: WeatherUiState,
     onSelectCity: (lat: String, lon: String) -> Unit,
     onSave: (name: String) -> Unit,
+    onTextChange: () -> Unit = {}
 ) {
     Column(modifier) {
         var cityName by remember { mutableStateOf("") }
@@ -58,9 +64,16 @@ internal fun WeatherScreen(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             TextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight(),
                 maxLines = 1,
                 value = cityName,
+                placeholder = {
+                    Text("Enter city name")
+                },
                 onValueChange = { newText ->
+                    onTextChange()
                     if (newText.length <= 30) {
                         cityName = newText
                     }
@@ -68,7 +81,9 @@ internal fun WeatherScreen(
             )
 
             Button(
-                modifier = Modifier.width(96.dp),
+                modifier = Modifier
+                    .width(96.dp)
+                    .wrapContentHeight(),
                 onClick = {
                     onSave(cityName)
                 }
@@ -91,7 +106,7 @@ internal fun WeatherScreen(
                 }
             }
 
-            is WeatherUiState.Empty -> {
+            is WeatherUiState.NoCityFound -> {
                 Text("No city found")
             }
 
@@ -103,18 +118,24 @@ internal fun WeatherScreen(
                 LazyColumn {
                     items(uiState.cityList.size) { index ->
                         val item = uiState.cityList[index]
+                        val lat = item.lat.toString()
+                        val lon = item.lon.toString()
+
+                        val name = item.name ?: "N/A"
+                        val country = item.country ?: "N/A"
+                        val state = item.state ?: "N/A"
                         Column(
                             modifier = Modifier.clickable {
                                 onSelectCity(
-                                    item.lat.toString(),
-                                    item.lon.toString()
+                                    lat,
+                                    lon
                                 )
                             },
                         ) {
                             Text(
                                 modifier = Modifier
                                     .padding(vertical = 4.dp),
-                                text = "${item.name}\n ${item.state},  ${item.country}"
+                                text = "$name\n $country,  $state"
                             )
 
                             HorizontalDivider()
@@ -124,10 +145,16 @@ internal fun WeatherScreen(
             }
 
             is WeatherUiState.ShowCurrentWeather -> {
-                Text("Temp : ${uiState.weather.main.temp}")
-                Text("Humidity : ${uiState.weather.main.humidity}")
-                Text("Wind speed : ${uiState.weather.wind.speed}")
-                Text("Description : ${uiState.weather.weather[0].description}")
+                val temperature = uiState.weather.main?.temp ?: "N/A"
+                val humidity = uiState.weather.main?.humidity ?: "N/A"
+                val windSpeed = uiState.weather.wind?.speed ?: "N/A"
+                val description =
+                    uiState.weather.weather?.getOrNull(0)?.description ?: "No description available"
+
+                Text("Temp : $temperature")
+                Text("Humidity : $humidity")
+                Text("Wind speed : $windSpeed")
+                Text("Description : $description")
             }
         }
     }
