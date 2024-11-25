@@ -25,4 +25,4 @@ providing a structured foundation for implementing modern Android development pr
 * Coroutines as concurrency design pattern
 
 ## Things to know
-* Api key and Api endpoint is store in config.properties file
+* API key and API endpoint is store in config.properties file
