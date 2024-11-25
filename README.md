@@ -17,7 +17,7 @@ providing a structured foundation for implementing modern Android development pr
 
 ## Technologies Used
 
-* Mvvm Architecture
+* MVVM Architecture
 * Kotlin as a lanugage
 * Jetpack Compose as UI
 * Retrofit as network management
