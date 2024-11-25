@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <string name="app_name">Weather forecast</string>
+    <string name="app_name">Weather Check</string>
 </resources>

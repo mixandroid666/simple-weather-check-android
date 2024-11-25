@@ -1,4 +1,4 @@
-# Weather Forecast App
+# Weather Check App
 
 This is an Android app to show the weather for any city in the world. Users can search for a city and see the current weather details.
 
@@ -18,7 +18,7 @@ providing a structured foundation for implementing modern Android development pr
 ## Technologies Used
 
 * MVVM Architecture
-* Kotlin as a lanugage
+* Kotlin as a language
 * Jetpack Compose as UI
 * Retrofit as network management
 * Hilt as dependency injection

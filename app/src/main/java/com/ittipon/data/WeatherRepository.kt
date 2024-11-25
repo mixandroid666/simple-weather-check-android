@@ -2,7 +2,7 @@ package com.ittipon.data
 
 import com.ittipon.model.CurrentWeatherResponse
 import com.ittipon.model.GeoCodingResponse
-import com.ittipon.weather_forecast.BuildConfig
+import com.ittipon.weather_check.BuildConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject

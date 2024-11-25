@@ -12,11 +12,11 @@ plugins {
 }
 
 android {
-    namespace = "com.ittipon.weather_forecast"
+    namespace = "com.ittipon.weather_check"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.ittipon.weather_forecast"
+        applicationId = "com.ittipon.weather_check"
         minSdk = 21
         targetSdk = 35
         versionCode = 1

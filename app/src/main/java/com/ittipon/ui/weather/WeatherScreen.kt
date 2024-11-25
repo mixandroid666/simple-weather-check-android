@@ -1,5 +1,6 @@
 package com.ittipon.ui.weather
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,9 +25,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ittipon.weather_check.R
 
 @Composable
 fun WeatherParentScreen(
@@ -111,7 +115,16 @@ internal fun WeatherScreen(
             }
 
             is WeatherUiState.Error -> {
-                Text(uiState.message)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(uiState.message)
+                    Image(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .padding(start = 4.dp),
+                        painter = painterResource(id = R.drawable.ic_warning),
+                        contentDescription = "Error"
+                    )
+                }
             }
 
             is WeatherUiState.ShowCityList -> {
@@ -151,10 +164,10 @@ internal fun WeatherScreen(
                 val description =
                     uiState.weather.weather?.getOrNull(0)?.description ?: "No description available"
 
-                Text("Temp : $temperature")
-                Text("Humidity : $humidity")
-                Text("Wind speed : $windSpeed")
-                Text("Description : $description")
+                Text("Temp : $temperature Celsius")
+                Text("Humidity : $humidity %")
+                Text("Wind speed : $windSpeed Meter/Sec")
+                Text("Description : $description ")
             }
         }
     }
